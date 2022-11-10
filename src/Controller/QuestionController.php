@@ -29,6 +29,10 @@ class QuestionController extends AbstractController
     #[Route('/question/{id}', name: 'question')]
     public function question(Request $request, int $id): Response
     {
+
+        // build a form.
+        // if form submitted create new comment.
+
         return $this->render('question/question.html.twig', [
             'question' => $this->questionRepository->findOneBy(['id' => $id])
         ]);
