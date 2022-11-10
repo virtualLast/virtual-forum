@@ -20,7 +20,7 @@ class CommentFixture extends Fixture implements DependentFixtureInterface
         for($i = 0; $i <= self::COMMENT_MAX_COUNT; $i++) {
             $comment = new Comment();
             $comment->setTitle($faker->text());
-            $comment->setContent($faker->paragraphs());
+            $comment->setContent($faker->paragraphs(rand(1,3), true));
             $comment->setEdited($faker->optional()->boolean());
             $comment->setVoteDown($faker->optional()->randomDigitNotZero());
             $comment->setVoteUp($faker->optional()->randomDigitNotZero());

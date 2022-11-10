@@ -20,7 +20,7 @@ class QuestionFixture extends Fixture implements DependentFixtureInterface
         for($i = 0; $i <= self::QUESTION_MAX_COUNT; $i++) {
             $question = new Question();
             $question->setTitle($faker->text());
-            $question->setContent($faker->paragraphs());
+            $question->setContent($faker->paragraphs(rand(1,3), true));
             $question->setEdited($faker->optional()->boolean());
             $question->setVoteDown($faker->optional()->randomDigitNotZero());
             $question->setVoteUp($faker->optional()->randomDigitNotZero());
