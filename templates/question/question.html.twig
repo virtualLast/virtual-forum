@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12"><h1>{{ question.title }}</h1></div>
+        </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col align-self-end text-end">
+                upVote: {{ question.voteUp }}
+                downVote: {{ question.voteDown }}
+                lastUpdated {{ question.updatedAt|format_datetime('medium', 'short') }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card my-5">
+                    <div class="card-body">
+                        <div class="card-text">
+                            {{ question.content|raw }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        Feedback
+                    </div>
+                    <div class="card-body">
+                        {% for comment in question.comments %}
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ comment.title }}</h5>
+                                    <div class="card-text">
+                                        {{ comment.content|raw }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="card my-5">
+                    <form>
+                        <div class="card-header">
+                            Add a comment
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="commentTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="commentTitle" name="commentTitle">
+                            </div>
+                            <div class="mb-3">
+                                <label for="commentContent" class="form-label">Content</label>
+                                <textarea class="form-control" id="commentContent" name="commentContent"></textarea>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+    Question
+{% endblock %}
+

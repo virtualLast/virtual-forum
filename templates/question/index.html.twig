@@ -16,5 +16,13 @@
         <li>Your controller at <code><a href="{{ '/Users/mike/dev/virtualforum/src/Controller/QuestionController.php'|file_link(0) }}">src/Controller/QuestionController.php</a></code></li>
         <li>Your template at <code><a href="{{ '/Users/mike/dev/virtualforum/templates/question/index.html.twig'|file_link(0) }}">templates/question/index.html.twig</a></code></li>
     </ul>
+
+    <ul class="list-group">
+        {% for question in questions %}
+            <li class="list-group-item">
+                <a href="{{ path('question', {id: question.id}) }}" class="list-group-item-action">{{ question.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
