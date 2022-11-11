@@ -36,8 +36,11 @@
                     <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
                 </ul>
                 <ul class="nav">
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Login</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Sign up</a></li>
+                    {% if is_granted('ROLE_USER') %}
+                    {% else %}
+                        <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link link-dark px-2">Login</a></li>
+                        <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Sign up</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
