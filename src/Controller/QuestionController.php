@@ -37,6 +37,10 @@ class QuestionController extends AbstractController
     {
 
         $question = $this->questionRepository->findOneBy(['id' => $id]);
+
+        $offset = max(0, $request->query->getInt('offset', 0));
+        $paginator = $this->commentRepository->getCommentPaginator($question, $offset);
+
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
@@ -51,6 +55,11 @@ class QuestionController extends AbstractController
 
         return $this->render('question/question.html.twig', [
             'question'      => $question,
+            'comments'      => $paginator,
+            'previous'      => $offset - CommentRepository::COMMENT_PAGINATOR_PER_PAGE,
+            'next'          => min(count($paginator),$offset + CommentRepository::COMMENT_PAGINATOR_PER_PAGE ),
+            'last_page'     => count($paginator),
+            'offset'        => $offset,
             'comment_form'  => $this->getUser() ? $form->createView() : null
         ]);
     }

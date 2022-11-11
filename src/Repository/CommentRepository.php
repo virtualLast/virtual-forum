@@ -18,7 +18,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    private const PAGINATOR_PER_PAGE = 4;
+    public const COMMENT_PAGINATOR_PER_PAGE = 4;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -49,7 +49,7 @@ class CommentRepository extends ServiceEntityRepository
         ->andWhere('c.question = :question')
             ->setParameter('question', $question)
             ->orderBy('c.createdAt', 'DESC')
-            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setMaxResults(self::COMMENT_PAGINATOR_PER_PAGE)
             ->setFirstResult($offset)
             ->getQuery()
         ;
