@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Entity\Question;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,6 +18,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    private const PAGINATOR_PER_PAGE = 4;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
@@ -37,6 +41,20 @@ class CommentRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getCommentPaginator(Question $question, int $offset ): Paginator
+    {
+        $query = $this->createQueryBuilder('c')
+        ->andWhere('c.question = :question')
+            ->setParameter('question', $question)
+            ->orderBy('c.createdAt', 'DESC')
+            ->setMaxResults(self::PAGINATOR_PER_PAGE)
+            ->setFirstResult($offset)
+            ->getQuery()
+        ;
+
+        return new Paginator($query);
     }
 
 //    /**
