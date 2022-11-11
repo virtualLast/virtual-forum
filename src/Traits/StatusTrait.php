@@ -17,10 +17,17 @@ trait StatusTrait
         return $this->status;
     }
 
-    #[ORM\PrePersist]
     public function setStatus(string $status): self
     {
         $this->status = $status ?? 'submitted';
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setStatusValue()
+    {
+        $this->status = 'submitted';
 
         return $this;
     }

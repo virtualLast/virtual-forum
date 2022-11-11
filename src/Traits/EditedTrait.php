@@ -15,10 +15,17 @@ trait EditedTrait
         return $this->edited;
     }
 
-    #[ORM\PrePersist]
     public function setEdited(?bool $edited): self
     {
         $this->edited = $edited ?? false;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setEditedValue()
+    {
+        $this->edited = false;
 
         return $this;
     }

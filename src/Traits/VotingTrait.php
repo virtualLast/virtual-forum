@@ -19,10 +19,17 @@ trait VotingTrait
         return $this->voteUp;
     }
 
-    #[ORM\PrePersist]
     public function setVoteUp(?int $voteUp): self
     {
         $this->voteUp = $voteUp ?? 0;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setVoteUpValue(): self
+    {
+        $this->voteUp = 0;
 
         return $this;
     }
@@ -32,10 +39,17 @@ trait VotingTrait
         return $this->voteDown;
     }
 
-    #[ORM\PrePersist]
     public function setVoteDown(?int $voteDown): self
     {
         $this->voteDown = $voteDown ?? 0;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setVoteDownValue(): self
+    {
+        $this->voteDown = 0;
 
         return $this;
     }

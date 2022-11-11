@@ -45,6 +45,7 @@ class QuestionController extends AbstractController
             $comment->setQuestion($question);
 
             $this->commentRepository->save($comment, true);
+            return $this->redirectToRoute($request->get('_route'), ['id' => $id]);
             // what now, redirect somewhere else or refresh the page or pop in the comment
         }
 
