@@ -4,45 +4,43 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CommentRepository;
+use App\Traits\EditedTrait;
+use App\Traits\StatusTrait;
+use App\Traits\TimeStampableTrait;
+use App\Traits\VotingTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ApiResource]
 class Comment
 {
+
+    use TimeStampableTrait; use EditedTrait; use StatusTrait; use VotingTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 400,
+        minMessage: 'Your comment must be at least {{ limit }} characters long',
+        maxMessage: 'Your comment cannot be longer than {{ limit }} characters',
+    )]
     private ?string $content = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
-
-    #[ORM\Column]
-    private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $edited = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $createdBy = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $voteUp = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $voteDown = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -77,42 +75,6 @@ class Comment
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    public function isEdited(): ?bool
-    {
-        return $this->edited;
-    }
-
-    public function setEdited(?bool $edited): self
-    {
-        $this->edited = $edited;
-
-        return $this;
-    }
-
     public function getCreatedBy(): ?User
     {
         return $this->createdBy;
@@ -121,42 +83,6 @@ class Comment
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function getVoteUp(): ?int
-    {
-        return $this->voteUp;
-    }
-
-    public function setVoteUp(?int $voteUp): self
-    {
-        $this->voteUp = $voteUp;
-
-        return $this;
-    }
-
-    public function getVoteDown(): ?int
-    {
-        return $this->voteDown;
-    }
-
-    public function setVoteDown(?int $voteDown): self
-    {
-        $this->voteDown = $voteDown;
-
-        return $this;
-    }
-
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(string $status): self
-    {
-        $this->status = $status;
 
         return $this;
     }
