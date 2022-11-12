@@ -61,6 +61,11 @@ class Question
         $this->comments = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return 'Question_' . $this->id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

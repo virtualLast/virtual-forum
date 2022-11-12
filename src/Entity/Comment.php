@@ -47,6 +47,11 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Question $question = null;
 
+    public function __toString(): string
+    {
+        return 'Comment_' . $this->id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
