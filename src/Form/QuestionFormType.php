@@ -14,13 +14,6 @@ class QuestionFormType extends AbstractType
         $builder
             ->add('title')
             ->add('content')
-            ->add('createdAt')
-            ->add('updatedAt')
-            ->add('edited')
-            ->add('voteUp')
-            ->add('voteDown')
-            ->add('status')
-            ->add('createdBy')
         ;
     }
 

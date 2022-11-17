@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                {% if question_form %}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card my-5">
+                            {{ form_start(question_form) }}
+                            <div class="card-header">
+                                Add a question
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    {{ form_errors(question_form) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_row(question_form.title) }}
+                                </div>
+                                <div class="mb-3">
+                                    {{ form_row(question_form.content) }}
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                            {{ form_end(question_form) }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
