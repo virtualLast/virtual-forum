@@ -23,12 +23,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Filter\EntityFilter;
 
 class QuestionCrudController extends AbstractCrudController
 {
-//    private EntityRepository $entityRepository;
-//
-//    public function __construct(EntityRepository $entityRepository)
-//    {
-//        $this->entityRepository = $entityRepository;
-//    }
 
     public static function getEntityFqcn(): string
     {
@@ -58,14 +52,6 @@ class QuestionCrudController extends AbstractCrudController
             yield $updatedAt->hideOnForm()->setFormTypeOption('disabled', true);
         }
 
-    }
-
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            ->setSearchFields(['title'])
-            ->setDefaultSort(['createdAt' => 'DESC', 'title' => 'ASC'])
-            ;
     }
 
     public function configureFilters(Filters $filters): Filters

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,15 @@ class QuestionRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findByCreatedBy($createdBy): QueryBuilder
+    {
+        return $this->createQueryBuilder('q')
+            ->andWhere('q.createdBy = :createdBy')
+            ->setParameter('createdBy', $createdBy)
+            ->orderBy('q.id', 'ASC')
+            ;
     }
 
 //    /**

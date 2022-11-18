@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Comment;
 use App\Entity\Question;
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -35,5 +36,13 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Questions', 'fas fa-question', Question::class);
         yield MenuItem::linkToCrud('Comments', 'fas fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+    }
+
+    public function configureCrud(): Crud
+    {
+        return Crud::new()
+            ->setSearchFields(['title'])
+            ->setDefaultSort(['createdAt' => 'DESC', 'title' => 'ASC'])
+            ;
     }
 }
