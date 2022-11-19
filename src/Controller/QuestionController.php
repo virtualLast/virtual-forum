@@ -8,6 +8,7 @@ use App\Form\CommentFormType;
 use App\Form\QuestionFormType;
 use App\Repository\CommentRepository;
 use App\Repository\QuestionRepository;
+use App\Service\AvatarService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,13 @@ class QuestionController extends AbstractController
 {
     private QuestionRepository $questionRepository;
     private CommentRepository $commentRepository;
+    private AvatarService $avatarService;
 
-    public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository)
+    public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository, AvatarService $avatarService)
     {
         $this->questionRepository   = $questionRepository;
         $this->commentRepository    = $commentRepository;
+        $this->avatarService        = $avatarService;
     }
 
     #[Route('/', name: 'home')]
@@ -29,7 +32,8 @@ class QuestionController extends AbstractController
     {
         return $this->render('question/index.html.twig', [
             'questions' => $this->questionRepository->findAllPublished(),
-            'controller_name' => 'QuestionController',
+            'controller_name'   => 'QuestionController',
+            'avatar'            => $this->avatarService->fetchAvatar($this->getUser()->getUserIdentifier())
         ]);
     }
 
