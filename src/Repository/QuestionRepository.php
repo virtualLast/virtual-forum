@@ -40,6 +40,11 @@ class QuestionRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllPublished(): array
+    {
+        return $this->findBy(['status' => 'published']);
+    }
+
     public function findByCreatedBy($createdBy): QueryBuilder
     {
         return $this->createQueryBuilder('q')
