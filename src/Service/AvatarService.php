@@ -20,6 +20,7 @@ class AvatarService
         $this->cache    = $cache;
     }
 
+    //@todo cater for unexpected api responses
     public function fetchAvatar(?string $username): ?string
     {
         $cacheRef = md5(urlencode(self::AVATAR_CACHE_TAG . '_' . $username));
