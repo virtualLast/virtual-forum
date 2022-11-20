@@ -18,13 +18,11 @@ class QuestionController extends AbstractController
 {
     private QuestionRepository $questionRepository;
     private CommentRepository $commentRepository;
-    private AvatarService $avatarService;
 
-    public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository, AvatarService $avatarService)
+    public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository)
     {
         $this->questionRepository   = $questionRepository;
         $this->commentRepository    = $commentRepository;
-        $this->avatarService        = $avatarService;
     }
 
     #[Route('/', name: 'home')]
@@ -32,8 +30,7 @@ class QuestionController extends AbstractController
     {
         return $this->render('question/index.html.twig', [
             'questions' => $this->questionRepository->findAllPublished(),
-            'controller_name'   => 'QuestionController',
-            'avatar'            => $this->avatarService->fetchAvatar($this->getUser()->getUserIdentifier())
+            'controller_name'   => 'QuestionController'
         ]);
     }
 
