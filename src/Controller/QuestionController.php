@@ -8,11 +8,11 @@ use App\Form\CommentFormType;
 use App\Form\QuestionFormType;
 use App\Repository\CommentRepository;
 use App\Repository\QuestionRepository;
-use App\Service\AvatarService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class QuestionController extends AbstractController
 {
@@ -54,6 +54,9 @@ class QuestionController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/question/{id}', name: 'question')]
     public function question(Request $request, int $id): Response
     {
@@ -70,7 +73,7 @@ class QuestionController extends AbstractController
             $comment->setCreatedBy($this->getUser());
             $comment->setQuestion($question);
 
-            $this->commentRepository->save($comment, true);
+            $this->commentRepository->save($comment, $request, true);
             return $this->redirectToRoute($request->get('_route'), ['id' => $id]);
             // what now, redirect somewhere else or refresh the page or pop in the comment
         }
