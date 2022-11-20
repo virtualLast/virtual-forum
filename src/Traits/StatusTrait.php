@@ -8,8 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 trait StatusTrait
 {
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(type: 'string', length: 255, options: ["default" => "submitted"])]
+    private ?string $status = 'submitted';
 
     public function getStatus(): ?string
     {
