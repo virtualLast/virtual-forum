@@ -30,9 +30,9 @@ final class CommentMessageHandler implements MessageHandlerInterface
         }
 
         if (2 === $this->spamChecker->getSpamScore($comment, $message->getContext())) {
-            $comment->setState('spam');
+            $comment->setStatus('spam');
         } else {
-            $comment->setState('published');
+            $comment->setStatus('published');
         }
 
         $this->commentRepository->save($comment, true);
