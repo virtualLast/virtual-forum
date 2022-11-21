@@ -2,15 +2,11 @@
 
 namespace App\Repository;
 
-use App\Components\SpamChecker;
 use App\Entity\Comment;
 use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
-use RuntimeException;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * @extends ServiceEntityRepository<Comment>
@@ -23,31 +19,15 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class CommentRepository extends ServiceEntityRepository
 {
     public const COMMENT_PAGINATOR_PER_PAGE = 4;
-    private SpamChecker $spamChecker;
 
-    public function __construct(ManagerRegistry $registry, SpamChecker $spamChecker,)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->spamChecker = $spamChecker;
         parent::__construct($registry, Comment::class);
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     */
-    public function save(Comment $entity, Request $request, bool $flush = false): void
+    public function save(Comment $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-
-        // spam checker
-        $context = [
-            'user_ip' => $request->getClientIp(),
-            'user_agent' => $request->headers->get('user-agent'),
-            'referrer' => $request->headers->get('referer'),
-            'permalink' => $request->getUri(),
-        ];
-        if (2 === $this->spamChecker->getSpamScore($entity, $context)) {
-            throw new RuntimeException('Blatant spam, go away!');
-        }
 
         if ($flush) {
             $this->getEntityManager()->flush();

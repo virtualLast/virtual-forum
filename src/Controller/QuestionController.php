@@ -6,11 +6,13 @@ use App\Entity\Comment;
 use App\Entity\Question;
 use App\Form\CommentFormType;
 use App\Form\QuestionFormType;
+use App\Message\CommentMessage;
 use App\Repository\CommentRepository;
 use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
@@ -18,11 +20,13 @@ class QuestionController extends AbstractController
 {
     private QuestionRepository $questionRepository;
     private CommentRepository $commentRepository;
+    private MessageBusInterface $bus;
 
-    public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository)
+    public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository, MessageBusInterface $bus)
     {
         $this->questionRepository   = $questionRepository;
         $this->commentRepository    = $commentRepository;
+        $this->bus                  = $bus;
     }
 
     #[Route('/', name: 'home')]
@@ -73,7 +77,16 @@ class QuestionController extends AbstractController
             $comment->setCreatedBy($this->getUser());
             $comment->setQuestion($question);
 
-            $this->commentRepository->save($comment, $request, true);
+            $this->commentRepository->save($comment, true);
+
+            $this->bus->dispatch(new CommentMessage($comment->getId(), [
+                'user_ip' => $request->getClientIp(),
+                'user_agent' => $request->headers->get('user-agent'),
+                'referrer' => $request->headers->get('referer'),
+                'permalink' => $request->getUri(),
+            ]));
+
+
             return $this->redirectToRoute($request->get('_route'), ['id' => $id]);
             // what now, redirect somewhere else or refresh the page or pop in the comment
         }
