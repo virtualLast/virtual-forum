@@ -1,0 +1,5 @@
+{% for question in questions %}
+    <li class="list-group-item">
+        <a href="{{ path('question', {id: question.id}) }}" class="list-group-item-action">{{ question.title }}</a>
+    </li>
+{% endfor %}

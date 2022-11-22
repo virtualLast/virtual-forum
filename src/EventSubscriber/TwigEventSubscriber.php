@@ -23,7 +23,12 @@ class TwigEventSubscriber implements EventSubscriberInterface
 
     public function onControllerEvent(ControllerEvent $event): void
     {
-        $this->twig->addGlobal('avatar', $this->avatarService->fetchAvatar($this->security->getUser()->getUserIdentifier()));
+        if($user = $this->security->getUser()) {
+            $this->twig->addGlobal('avatar', $this->avatarService->fetchAvatar($user->getUserIdentifier()));
+        } else {
+            $this->twig->addGlobal('avatar', $this->avatarService->fetchAvatar('missing'));
+        }
+
     }
 
     public static function getSubscribedEvents(): array

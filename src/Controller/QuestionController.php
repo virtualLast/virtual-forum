@@ -35,9 +35,16 @@ class QuestionController extends AbstractController
         $response = new Response();
         $response->setSharedMaxAge(3600);
         return $this->render('question/index.html.twig', [
-            'questions' => $this->questionRepository->findAllPublished(),
             'controller_name'   => 'QuestionController'
         ], $response);
+    }
+
+    #[Route('/questions_list', name: 'questions_list')]
+    public function questionsList(): Response
+    {
+        return $this->render('question/question_list.html.twig', [
+            'questions' => $this->questionRepository->findAllPublished(),
+        ]);
     }
 
     #[Route('/question/create', name: 'question_create')]
