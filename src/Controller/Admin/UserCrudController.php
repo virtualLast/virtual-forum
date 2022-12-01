@@ -41,8 +41,7 @@ class UserCrudController extends AbstractCrudController
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password',
-                ],
-                'mapped' => false,
+                ]
             ])
             ->setRequired($pageName === Crud::PAGE_NEW)
             ->onlyOnForms();
