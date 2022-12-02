@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -29,9 +31,10 @@ class UserCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm()->setFormTypeOption('disabled', true);
-        yield TextField::new('username');
+        yield TextField::new('username')->setFormTypeOption('disabled', true);
+        yield TextField::new('name')->hideOnIndex();
         yield EmailField::new('email');
-        yield HiddenField::new('password')->hideOnIndex();
+        yield HiddenField::new('password')->hideOnIndex()->setDisabled();
         yield TextField::new('plainPassword')
             ->setFormType(RepeatedType::class)
             ->setFormTypeOptions([
@@ -45,5 +48,8 @@ class UserCrudController extends AbstractCrudController
             ])
             ->setRequired($pageName === Crud::PAGE_NEW)
             ->onlyOnForms();
+        yield ArrayField::new('roles');
+        yield DateField::new('createdAt')->hideOnIndex()->hideWhenCreating()->setDisabled();
+        yield DateField::new('updatedAt')->hideOnIndex()->hideWhenCreating()->setDisabled();
     }
 }
