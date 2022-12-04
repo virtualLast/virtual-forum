@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
@@ -48,7 +48,10 @@ class UserCrudController extends AbstractCrudController
             ])
             ->setRequired($pageName === Crud::PAGE_NEW)
             ->onlyOnForms();
-        yield ArrayField::new('roles');
+        yield ChoiceField::new('roles')->hideOnIndex()->setChoices([
+            'User' => 'ROLE_USER',
+            'Admin' => 'ROLE_ADMIN'
+        ])->allowMultipleChoices();
         yield DateField::new('createdAt')->hideOnIndex()->hideWhenCreating()->setDisabled();
         yield DateField::new('updatedAt')->hideOnIndex()->hideWhenCreating()->setDisabled();
     }

@@ -29,11 +29,8 @@
         <nav class="py-2 bg-light border-bottom">
             <div class="container d-flex flex-wrap">
                 <ul class="nav me-auto">
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Pricing</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
+                    <li class="nav-item"><a href="{{ path('home') }}" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+                    <li class="nav-item"><a href="{{ path('question_create') }}" class="nav-link link-dark px-2">New Question</a></li>
                 </ul>
                 <ul class="nav">
                     {% if is_granted('ROLE_USER') %}
