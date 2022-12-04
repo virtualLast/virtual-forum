@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class QuestionController extends AbstractController
 {
@@ -58,6 +57,12 @@ class QuestionController extends AbstractController
             $question->setCreatedBy($this->getUser());
             $this->questionRepository->save($question, true);
 
+            /**
+             * @todo I want to submit the question to a messenger so that we can check the contents for spam.
+             * Questions status will initially be 'submitted', run through the bus and spam checker, if its potentially spam
+             * then we email the admin so that they can check and give final approval.
+             */
+
             $savedQuestion = $this->questionRepository->findOneBy(['createdBy' => $this->getUser()], ['createdAt' => 'DESC']);
             return $this->redirectToRoute('question', ['id' => $savedQuestion->getId()]);
         }
@@ -68,7 +73,6 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @throws TransportExceptionInterface
      */
     #[Route('/question/{id}', name: 'question')]
     public function question(Request $request, int $id): Response
