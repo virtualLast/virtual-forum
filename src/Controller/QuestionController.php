@@ -7,6 +7,7 @@ use App\Entity\Question;
 use App\Form\CommentFormType;
 use App\Form\QuestionFormType;
 use App\Message\CommentMessage;
+use App\Message\QuestionMessage;
 use App\Repository\CommentRepository;
 use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -57,14 +58,14 @@ class QuestionController extends AbstractController
             $question->setCreatedBy($this->getUser());
             $this->questionRepository->save($question, true);
 
-            /**
-             * @todo I want to submit the question to a messenger so that we can check the contents for spam.
-             * Questions status will initially be 'submitted', run through the bus and spam checker, if its potentially spam
-             * then we email the admin so that they can check and give final approval.
-             */
+            $this->bus->dispatch(new QuestionMessage($question->getId(), [
+                'user_ip' => $request->getClientIp(),
+                'user_agent' => $request->headers->get('user-agent'),
+                'referrer' => $request->headers->get('referer'),
+                'permalink' => $request->getUri(),
+            ]));
 
-            $savedQuestion = $this->questionRepository->findOneBy(['createdBy' => $this->getUser()], ['createdAt' => 'DESC']);
-            return $this->redirectToRoute('question', ['id' => $savedQuestion->getId()]);
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('question/create.html.twig', [

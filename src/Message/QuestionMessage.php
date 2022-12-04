@@ -2,7 +2,7 @@
 
 namespace App\Message;
 
-final class CommentMessage extends AbstractMessage
+final class QuestionMessage extends AbstractMessage
 {
     public function __construct(int $id, array $context = [])
     {
