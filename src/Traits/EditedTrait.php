@@ -23,7 +23,7 @@ trait EditedTrait
     }
 
     #[ORM\PrePersist]
-    public function setEditedValue()
+    public function setEditedValue(): static
     {
         $this->edited = false;
 

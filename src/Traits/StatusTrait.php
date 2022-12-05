@@ -16,7 +16,7 @@ trait StatusTrait
         return $this->status;
     }
 
-    public function setStatus(string $status): self
+    public function setStatus(?string $status): self
     {
         $this->status = $status ?? 'submitted';
 
@@ -24,7 +24,7 @@ trait StatusTrait
     }
 
     #[ORM\PrePersist]
-    public function setStatusValue()
+    public function setStatusValue(): static
     {
         $this->status = 'submitted';
 
