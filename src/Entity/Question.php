@@ -56,16 +56,16 @@ class Question
         return $this->id;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getTitle():?string
+    {
+        return $this->title;
     }
 
     public function getContent(): ?string
@@ -73,7 +73,7 @@ class Question
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(string $content): static
     {
         $this->content = $content;
 
@@ -85,7 +85,7 @@ class Question
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $createdBy): self
+    public function setCreatedBy(?User $createdBy): static
     {
         $this->createdBy = $createdBy;
 

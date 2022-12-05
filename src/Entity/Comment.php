@@ -57,12 +57,7 @@ class Comment
         return $this->id;
     }
 
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
@@ -74,7 +69,7 @@ class Comment
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(string $content): static
     {
         $this->content = $content;
 
@@ -86,7 +81,7 @@ class Comment
         return $this->createdBy;
     }
 
-    public function setCreatedBy(?User $createdBy): self
+    public function setCreatedBy(?User $createdBy): static
     {
         $this->createdBy = $createdBy;
 
@@ -98,7 +93,7 @@ class Comment
         return $this->question;
     }
 
-    public function setQuestion(?Question $question): self
+    public function setQuestion(?Question $question): static
     {
         $this->question = $question;
 
