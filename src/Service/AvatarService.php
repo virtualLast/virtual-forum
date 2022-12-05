@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -21,10 +22,14 @@ class AvatarService
     }
 
     //@todo cater for unexpected api responses
-    public function fetchAvatar(?string $username): ?string
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function fetchAvatar(string $username): ?string
     {
         $cacheRef = md5(urlencode(self::AVATAR_CACHE_TAG . '_' . $username));
-        return $this->cache->get($cacheRef, function (ItemInterface $item) {
+        return (string) $this->cache->get($cacheRef, function (ItemInterface $item) {
             $item->tag([self::AVATAR_CACHE_TAG]);
             $item->expiresAfter(self::HOUR);
             $seed = time();
