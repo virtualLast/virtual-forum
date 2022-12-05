@@ -17,14 +17,12 @@ final class QuestionMessageHandler implements MessageHandlerInterface
     private SpamChecker $spamChecker;
     private MessageBusInterface $bus;
     private WorkflowInterface $workflow;
-    private LoggerInterface $logger;
 
-    public function __construct(QuestionRepository $questionRepository, SpamChecker $spamChecker, MessageBusInterface $bus, WorkflowInterface $questionStateMachine, LoggerInterface $logger = null)
+    public function __construct(QuestionRepository $questionRepository, SpamChecker $spamChecker, MessageBusInterface $bus, WorkflowInterface $questionStateMachine)
     {
         $this->questionRepository    = $questionRepository;
         $this->spamChecker          = $spamChecker;
         $this->workflow             = $questionStateMachine;
-        $this->logger               = $logger;
         $this->bus                  = $bus;
     }
 
@@ -55,9 +53,6 @@ final class QuestionMessageHandler implements MessageHandlerInterface
         } elseif ($this->workflow->can($question, 'publish') || $this->workflow->can($question, 'publish_ham')) {
             $this->workflow->apply($question, $this->workflow->can($question, 'publish') ? 'publish' : 'publish_ham');
             $this->questionRepository->save($question, true);
-        }
-        elseif ($this->logger) {
-            $this->logger->debug('Dropping comment message', ['comment' => $question->getId(), 'status' => $question->getStatus()]);
         }
 
     }

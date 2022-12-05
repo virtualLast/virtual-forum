@@ -17,14 +17,12 @@ final class CommentMessageHandler implements MessageHandlerInterface
     private SpamChecker $spamChecker;
     private MessageBusInterface $bus;
     private WorkflowInterface $workflow;
-    private LoggerInterface $logger;
 
-    public function __construct(CommentRepository $commentRepository, SpamChecker $spamChecker, MessageBusInterface $bus, WorkflowInterface $commentStateMachine, LoggerInterface $logger = null)
+    public function __construct(CommentRepository $commentRepository, SpamChecker $spamChecker, MessageBusInterface $bus, WorkflowInterface $commentStateMachine)
     {
         $this->commentRepository    = $commentRepository;
         $this->spamChecker          = $spamChecker;
         $this->workflow             = $commentStateMachine;
-        $this->logger               = $logger;
         $this->bus                  = $bus;
     }
 
@@ -55,9 +53,6 @@ final class CommentMessageHandler implements MessageHandlerInterface
         } elseif ($this->workflow->can($comment, 'publish') || $this->workflow->can($comment, 'publish_ham')) {
             $this->workflow->apply($comment, $this->workflow->can($comment, 'publish') ? 'publish' : 'publish_ham');
             $this->commentRepository->save($comment, true);
-        }
-        elseif ($this->logger) {
-            $this->logger->debug('Dropping comment message', ['comment' => $comment->getId(), 'status' => $comment->getStatus()]);
         }
 
     }
