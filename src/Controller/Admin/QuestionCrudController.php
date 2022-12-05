@@ -36,6 +36,7 @@ class QuestionCrudController extends AbstractCrudController
         yield IdField::new('id')->hideOnForm()->setFormTypeOption('disabled', true);
         yield TextField::new('title');
         yield TextareaField::new('content')->hideOnIndex();
+        yield TextField::new('status')->hideOnIndex();
 
         $createdAt = DateTimeField::new('createdAt')->setFormTypeOptions([
             'html5' => true,
