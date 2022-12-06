@@ -19,11 +19,13 @@ class UserPrePersist
     // the entity instance and the lifecycle event
     public function prePersist(User $user, LifecycleEventArgs $event): void
     {
-        $user->setPassword(
-            $this->userPasswordHasher->hashPassword(
-                $user,
-                $user->getPlainPassword()
-            )
-        );
+        if(!empty($user->getPlainPassword())) {
+            $user->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $user,
+                    $user->getPlainPassword()
+                )
+            );
+        }
     }
 }

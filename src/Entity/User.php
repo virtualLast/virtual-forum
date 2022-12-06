@@ -86,6 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
+     * @psalm-return array<array-key, string>
      */
     public function getRoles(): array
     {
@@ -151,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Question>
+     * @return Collection
      */
     public function getQuestions(): Collection
     {
@@ -181,9 +182,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Comment>
+     * @return ArrayCollection|Collection
      */
-    public function getComments(): Collection
+    public function getComments(): ArrayCollection|Collection
     {
         return $this->comments;
     }
