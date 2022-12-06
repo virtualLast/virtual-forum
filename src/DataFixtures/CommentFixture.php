@@ -40,9 +40,10 @@ class CommentFixture extends Fixture implements DependentFixtureInterface
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
      *
-     * @psalm-return array<class-string<FixtureInterface>>
+     * @psalm-return array{0: UserFixture::class, 1: QuestionFixture::class}
+     * @return string[]
      */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
           UserFixture::class,
