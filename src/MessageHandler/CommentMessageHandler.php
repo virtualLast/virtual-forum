@@ -5,7 +5,6 @@ namespace App\MessageHandler;
 use App\Components\SpamChecker;
 use App\Message\CommentMessage;
 use App\Repository\CommentRepository;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Workflow\WorkflowInterface;
@@ -20,10 +19,10 @@ final class CommentMessageHandler implements MessageHandlerInterface
 
     public function __construct(CommentRepository $commentRepository, SpamChecker $spamChecker, MessageBusInterface $bus, WorkflowInterface $commentStateMachine)
     {
-        $this->commentRepository    = $commentRepository;
-        $this->spamChecker          = $spamChecker;
-        $this->workflow             = $commentStateMachine;
-        $this->bus                  = $bus;
+        $this->commentRepository = $commentRepository;
+        $this->spamChecker = $spamChecker;
+        $this->workflow = $commentStateMachine;
+        $this->bus = $bus;
     }
 
     /**
@@ -36,14 +35,13 @@ final class CommentMessageHandler implements MessageHandlerInterface
             return;
         }
 
-
-        if($this->workflow->can($comment, 'accept')) {
+        if ($this->workflow->can($comment, 'accept')) {
             $score = $this->spamChecker->getSpamScore($comment, $message->getContext());
             $transition = 'accept';
 
-            if($score === 2) {
+            if (2 === $score) {
                 $transition = 'reject_spam';
-            } elseif ($score === 1) {
+            } elseif (1 === $score) {
                 $transition = 'might_be_spam';
             }
 
@@ -54,6 +52,5 @@ final class CommentMessageHandler implements MessageHandlerInterface
             $this->workflow->apply($comment, $this->workflow->can($comment, 'publish') ? 'publish' : 'publish_ham');
             $this->commentRepository->save($comment, true);
         }
-
     }
 }

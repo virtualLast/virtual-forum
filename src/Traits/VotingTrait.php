@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 trait VotingTrait
 {
-
     #[ORM\Column(nullable: true)]
     private ?int $voteUp = null;
 

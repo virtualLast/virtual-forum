@@ -17,8 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource]
 class Comment
 {
-
-    use TimeStampableTrait; use EditedTrait; use StatusTrait; use VotingTrait;
+    use TimeStampableTrait;
+    use EditedTrait;
+    use StatusTrait;
+    use VotingTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -49,7 +51,7 @@ class Comment
 
     public function __toString(): string
     {
-        return 'Comment_' . $this->id;
+        return 'Comment_'.$this->id;
     }
 
     public function getId(): ?int

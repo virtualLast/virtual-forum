@@ -12,10 +12,14 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Question|null find($id, $lockMode = null, $lockVersion = null)
  * @method Question|null findOneBy(array $criteria, array $orderBy = null)
+ *
  * @psalm-method list<Question> findAll()
- * @method Question[]    findAll()
+ *
+ * @method Question[] findAll()
+ *
  * @psalm-method list<Question> findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method Question[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ *
+ * @method Question[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class QuestionRepository extends ServiceEntityRepository
 {
@@ -52,8 +56,7 @@ class QuestionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('q')
             ->andWhere('q.createdBy = :createdBy')
             ->setParameter('createdBy', $createdBy)
-            ->orderBy('q.id', 'ASC')
-            ;
+            ->orderBy('q.id', 'ASC');
     }
 
 //    /**

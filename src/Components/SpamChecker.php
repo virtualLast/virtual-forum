@@ -4,25 +4,24 @@ namespace App\Components;
 
 use App\Entity\Comment;
 use App\Entity\Question;
-use RuntimeException;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SpamChecker
 {
-
     private HttpClientInterface $client;
     private string $endpoint;
 
     public function __construct(HttpClientInterface $client, string $akismetKey)
     {
-        $this->client   = $client;
+        $this->client = $client;
         $this->endpoint = sprintf('https://%s.rest.akismet.com/1.1/comment-check', $akismetKey);
     }
 
     /**
      * @return int Spam score: 0: not spam, 1: maybe spam, 2: blatant spam
-     * @throws RuntimeException|TransportExceptionInterface if the call did not work
+     *
+     * @throws \RuntimeException|TransportExceptionInterface if the call did not work
      */
     public function getSpamScore(Comment|Question $entity, array $context): int
     {
@@ -47,7 +46,7 @@ class SpamChecker
 
         $content = $response->getContent();
         if (isset($headers['x-akismet-debug-help'][0])) {
-            throw new RuntimeException(sprintf('Unable to check for spam: %s (%s).', $content, $headers['x-akismet-debug-help'][0]));
+            throw new \RuntimeException(sprintf('Unable to check for spam: %s (%s).', $content, $headers['x-akismet-debug-help'][0]));
         }
 
         return 'true' === $content ? 1 : 0;

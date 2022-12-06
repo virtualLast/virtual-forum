@@ -20,7 +20,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPlainPassword((string)$form->get('plainPassword')->getData());
+            $user->setPlainPassword((string) $form->get('plainPassword')->getData());
 
             $entityManager->persist($user);
             $entityManager->flush();

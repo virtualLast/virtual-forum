@@ -19,7 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Question
 {
-    use TimeStampableTrait; use EditedTrait; use StatusTrait; use VotingTrait;
+    use TimeStampableTrait;
+    use EditedTrait;
+    use StatusTrait;
+    use VotingTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -48,7 +51,7 @@ class Question
 
     public function __toString(): string
     {
-        return 'Question_' . $this->id;
+        return 'Question_'.$this->id;
     }
 
     public function getId(): ?int
@@ -63,7 +66,7 @@ class Question
         return $this;
     }
 
-    public function getTitle():?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }

@@ -3,7 +3,6 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Comment;
-use App\Entity\Question;
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -29,7 +28,6 @@ class CommentCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-
         yield IdField::new('id')->hideOnForm()->setFormTypeOption('disabled', true);
         yield TextField::new('title');
         yield TextareaField::new('content')->hideOnIndex();
@@ -44,35 +42,34 @@ class CommentCrudController extends AbstractCrudController
         ]);
         $question = AssociationField::new('question')->hideOnIndex()->hideWhenUpdating();
 
-        if(in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             yield AssociationField::new('createdBy')->hideWhenUpdating();
             yield $question;
             yield $createdAt->hideOnForm()->setFormTypeOption('disabled', true);
             yield $updatedAt->hideOnForm()->setFormTypeOption('disabled', true);
         }
-        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             yield $question->setFormTypeOption('query_builder', function (QuestionRepository $entityRepository) {
                 return $entityRepository->findByCreatedBy($this->getUser());
             });
         }
-
     }
 
     public function configureFilters(Filters $filters): Filters
     {
-        if(in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             $filters->add(EntityFilter::new('createdBy'));
         }
+
         return $filters
             ->add(DateTimeFilter::new('createdAt'))
-            ->add(DateTimeFilter::new('updatedAt'))
-            ;
+            ->add(DateTimeFilter::new('updatedAt'));
     }
 
     public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
         $response = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
-        if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
             $response->andWhere('entity.createdBy = :createdBy')->setParameter('createdBy', $this->getUser());
         }
 

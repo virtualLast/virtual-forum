@@ -17,23 +17,25 @@ class AvatarService
 
     public function __construct(HttpClientInterface $client, TagAwareCacheInterface $cache)
     {
-        $this->client   = $client;
-        $this->cache    = $cache;
+        $this->client = $client;
+        $this->cache = $cache;
     }
 
-    //@todo cater for unexpected api responses
+    // @todo cater for unexpected api responses
 
     /**
      * @throws InvalidArgumentException
      */
     public function fetchAvatar(string $username): ?string
     {
-        $cacheRef = md5(urlencode(self::AVATAR_CACHE_TAG . '_' . $username));
+        $cacheRef = md5(urlencode(self::AVATAR_CACHE_TAG.'_'.$username));
+
         return (string) $this->cache->get($cacheRef, function (ItemInterface $item) {
             $item->tag([self::AVATAR_CACHE_TAG]);
             $item->expiresAfter(self::HOUR);
             $seed = time();
             $request = $this->client->request('GET', sprintf('https://avatars.dicebear.com/api/avataaars/%s.svg', $seed));
+
             return $request->getContent();
         });
     }

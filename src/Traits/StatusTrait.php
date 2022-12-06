@@ -7,8 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 trait StatusTrait
 {
-
-    #[ORM\Column(type: 'string', length: 255, options: ["default" => "submitted"])]
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => 'submitted'])]
     private ?string $status = 'submitted';
 
     public function getStatus(): ?string

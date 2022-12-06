@@ -11,8 +11,8 @@ use App\Message\QuestionMessage;
 use App\Repository\CommentRepository;
 use App\Repository\QuestionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,9 +24,9 @@ class QuestionController extends AbstractController
 
     public function __construct(QuestionRepository $questionRepository, CommentRepository $commentRepository, MessageBusInterface $bus)
     {
-        $this->questionRepository   = $questionRepository;
-        $this->commentRepository    = $commentRepository;
-        $this->bus                  = $bus;
+        $this->questionRepository = $questionRepository;
+        $this->commentRepository = $commentRepository;
+        $this->bus = $bus;
     }
 
     #[Route('/', name: 'home')]
@@ -34,8 +34,9 @@ class QuestionController extends AbstractController
     {
         $response = new Response();
         $response->setSharedMaxAge(3600);
+
         return $this->render('question/index.html.twig', [
-            'controller_name'   => 'QuestionController'
+            'controller_name' => 'QuestionController',
         ], $response);
     }
 
@@ -54,7 +55,7 @@ class QuestionController extends AbstractController
         $form = $this->createForm(QuestionFormType::class, $question);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $question->setCreatedBy($this->getUser());
             $this->questionRepository->save($question, true);
 
@@ -69,16 +70,13 @@ class QuestionController extends AbstractController
         }
 
         return $this->render('question/create.html.twig', [
-            'question_form'  => $this->getUser() ? $form->createView() : null
+            'question_form' => $this->getUser() ? $form->createView() : null,
         ]);
     }
 
-    /**
-     */
     #[Route('/question/{id}', name: 'question')]
     public function question(Request $request, int $id): Response
     {
-
         $question = $this->questionRepository->findOneBy(['id' => $id]);
 
         $offset = max(0, $request->query->getInt('offset', 0));
@@ -87,7 +85,7 @@ class QuestionController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentFormType::class, $comment);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $comment->setCreatedBy($this->getUser());
             $comment->setQuestion($question);
 
@@ -100,20 +98,18 @@ class QuestionController extends AbstractController
                 'permalink' => $request->getUri(),
             ]));
 
-
             return $this->redirectToRoute($request->get('_route'), ['id' => $id]);
             // what now, redirect somewhere else or refresh the page or pop in the comment
         }
 
         return $this->render('question/question.html.twig', [
-            'question'      => $question,
-            'comments'      => $paginator,
-            'previous'      => $offset - CommentRepository::COMMENT_PAGINATOR_PER_PAGE,
-            'next'          => min(count($paginator),$offset + CommentRepository::COMMENT_PAGINATOR_PER_PAGE ),
-            'last_page'     => count($paginator),
-            'offset'        => $offset,
-            'comment_form'  => $this->getUser() ? $form->createView() : null
+            'question' => $question,
+            'comments' => $paginator,
+            'previous' => $offset - CommentRepository::COMMENT_PAGINATOR_PER_PAGE,
+            'next' => min(count($paginator), $offset + CommentRepository::COMMENT_PAGINATOR_PER_PAGE),
+            'last_page' => count($paginator),
+            'offset' => $offset,
+            'comment_form' => $this->getUser() ? $form->createView() : null,
         ]);
     }
-
 }

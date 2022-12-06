@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\HasLifecycleCallbacks]
 trait TimeStampableTrait
 {
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 

@@ -44,13 +44,13 @@ class UserCrudController extends AbstractCrudController
                 ],
                 'second_options' => [
                     'label' => 'Repeat Password',
-                ]
+                ],
             ])
-            ->setRequired($pageName === Crud::PAGE_NEW)
+            ->setRequired(Crud::PAGE_NEW === $pageName)
             ->onlyOnForms();
         yield ChoiceField::new('roles')->hideOnIndex()->setChoices([
             'User' => 'ROLE_USER',
-            'Admin' => 'ROLE_ADMIN'
+            'Admin' => 'ROLE_ADMIN',
         ])->allowMultipleChoices();
         yield DateField::new('createdAt')->hideOnIndex()->hideWhenCreating()->setDisabled();
         yield DateField::new('updatedAt')->hideOnIndex()->hideWhenCreating()->setDisabled();

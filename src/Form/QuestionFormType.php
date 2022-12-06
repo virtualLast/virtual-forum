@@ -13,8 +13,7 @@ class QuestionFormType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('content')
-        ;
+            ->add('content');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -20,7 +21,7 @@ class AdminFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $now = new \DateTimeImmutable();
+        $now = new DateTimeImmutable();
         $admin = new User();
         $admin->setUsername('admin');
         $admin->setEmail('admin@example.com');

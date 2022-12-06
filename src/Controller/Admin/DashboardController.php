@@ -42,7 +42,6 @@ class DashboardController extends AbstractDashboardController
     {
         return Crud::new()
             ->setSearchFields(['title'])
-            ->setDefaultSort(['createdAt' => 'DESC', 'title' => 'ASC'])
-            ;
+            ->setDefaultSort(['createdAt' => 'DESC', 'title' => 'ASC']);
     }
 }

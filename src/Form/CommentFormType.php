@@ -9,13 +9,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentFormType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title')
-            ->add('content')
-        ;
+            ->add('content');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
