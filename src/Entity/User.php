@@ -56,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
+    /**
+     * @psalm-suppress PropertyNotSetInConstructor
+     */
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -86,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     /**

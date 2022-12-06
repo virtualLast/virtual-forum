@@ -26,7 +26,7 @@ class CommentFixture extends Fixture implements DependentFixtureInterface
             $comment->setVoteUp($faker->optional()->randomDigitNotZero());
             $comment->setCreatedAt($now);
             $comment->setUpdatedAt($now);
-            $comment->setStatus($faker->randomElement(['published', 'rejected', 'submitted']));
+            $comment->setStatus((string) $faker->randomElement(['published', 'rejected', 'submitted']));
             $comment->setCreatedBy($this->getReference(UserFixture::USER_REFERENCE . rand(0, UserFixture::USER_MAX_COUNT)));
             $comment->setQuestion($this->getReference(QuestionFixture::QUESTION_REFERENCE . rand(0, QuestionFixture::QUESTION_MAX_COUNT)));
             $manager->persist($comment);
