@@ -29,7 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank]
-    private ?string $username = null;
+    private string $username;
 
     #[ORM\Column]
     private array $roles = [];
@@ -63,6 +63,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function __toString(): string
+    {
+        return $this->username;
+    }
+
+    public function getUsername(): string
     {
         return $this->username;
     }
